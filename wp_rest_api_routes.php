@@ -22,14 +22,24 @@ function wp_webhook_rest_api_post_response( $request ) {
     //Give our CSV file a name.
     $csvFileName = 'csvFile.csv';
     
-    //Open file pointer.
-    // $fp = fopen($csvFileName, 'w'); // "w" for overwriting existing content
-    $fp = fopen($csvFileName, 'a'); // "a" for appending new content at the end
+    // Setting Header func for triggering downloading option
+    // header( "Content-type: text/csv" );
+    // header( "Content-Disposition: attachment; filename:$csvFileName;" );
+
+    $tableHeaders = array( 'Participation ID', 'Participant ID', 'PII Data ID', 'Instant Win Slot ID', 'Pack Code', 'Win ID', 'Email', 'Prize Name', 'Tier', 'Confirmation Link', 'Draw Period', 'Participation Date', 'Is Win Confirmed?', 'Salutation', 'First Name', 'Last Name', 'AddressLine 1', 'AddressLine 2', 'ZipCode', 'Phone Number', 'City', 'Date Of Birth', 'Oreoji Number', 'Gender', 'Size', 'ConfirmationDate' );
+
+    // var_dump(array_keys($parameters));
     
+
+    //Open file pointer.
+    // $output = fopen($csvFileName, 'w'); // "w" for overwriting existing content AND "a" for appending new content at the end
+    $output = fopen($csvFileName, 'a'); // "w" for overwriting existing content AND "a" for appending new content at the end
+
+    $fp = fputcsv($output, $tableHeaders);
     //Write the row to the CSV file.
-    fputcsv($fp, $parameters);
+    fputcsv($output, $parameters);
     
     //Finally, close the file pointer.
-    fclose($fp);
+    fclose($output);
 
 }
